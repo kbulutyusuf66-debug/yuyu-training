@@ -1,0 +1,1 @@
+Bu sürümdeki GIF'ler uygulama içi, hafif animasyonlu öğretici şemalardır. Gerçek çekim videoları yerine offline çalışması için yerel tutulurlar.

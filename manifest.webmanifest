@@ -1,0 +1,9 @@
+{
+  "name": "Yuyu Training",
+  "short_name": "Yuyu",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090712",
+  "theme_color": "#090712",
+  "lang": "tr"
+}

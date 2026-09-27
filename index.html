@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="tr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090712"><title>Yuyu Training</title>
+<style>
+:root{--bg:#090712;--card:#151124;--card2:#1b1630;--text:#f8f7ff;--muted:#aaa4bf;--line:#30294a;--purple:#9b5cff;--turq:#2ee6d0;--pink:#c06cff;--ok:#32e6a1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#20133b 0,#090712 45%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:20px 17px 15px;background:#090712dd;backdrop-filter:blur(12px);position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line)}
+.brand{font-size:25px;font-weight:900;letter-spacing:-.5px}.brand span{color:var(--turq)}.sub{color:var(--muted);font-size:12px;margin-top:2px}
+main{max-width:760px;margin:auto;padding:15px 13px 100px}.hero{border:1px solid #48336b;background:linear-gradient(135deg,#241443,#10182b);border-radius:22px;padding:19px;box-shadow:0 15px 50px #0006}
+.hero h1{font-size:24px;margin:0 0 5px}.hero p{margin:0;color:#c9c4d8;font-size:13px}.barbg{height:10px;background:#302744;border-radius:20px;margin-top:15px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--turq));width:0}
+.stats{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}.tabs{display:flex;gap:8px;overflow:auto;padding:13px 0 7px}.tabs button{border:1px solid var(--line);background:#12101c;color:#bfb8d4;border-radius:12px;padding:9px 13px;font-weight:800;white-space:nowrap}.tabs button.active{color:#07120f;background:var(--turq);border-color:var(--turq)}
+.card{background:linear-gradient(180deg,#171229,#12101e);border:1px solid var(--line);border-radius:18px;padding:15px;margin:10px 0}.exercise{border-top:1px solid var(--line);padding:15px 0}.exercise:first-child{border-top:0}.exhead{display:flex;gap:10px;justify-content:space-between}.name{font-weight:900}.meta{color:var(--muted);font-size:12px;margin-top:4px}.badge{font-size:10px;padding:5px 8px;border-radius:9px;background:#2b1d48;color:#d8c5ff;height:max-content}.sets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.set{border:1px solid var(--line);background:#0f0d18;color:#c9c4d8;border-radius:10px;padding:8px 3px;font-size:11px;font-weight:800}.set.done{background:#073d32;border-color:#168e74;color:#6dffd5}.buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.smallbtn{border:1px solid #44375f;background:#211a35;color:#eae5fa;border-radius:10px;padding:8px 10px;font-weight:800;font-size:11px}.gif{width:100%;max-width:420px;border-radius:13px;margin-top:10px;border:1px solid #3c3156;background:#0a0811}.details{color:#c3bdd2;font-size:12px;line-height:1.5;margin-top:9px}.log{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.log input{width:100%;padding:9px;border-radius:9px;border:1px solid var(--line);background:#0d0b15;color:#fff}.note{background:#211536;border:1px solid #4b2d72;border-radius:14px;padding:12px;font-size:12px;line-height:1.5;color:#d8d0e8}.sectionTitle{font-weight:900;font-size:16px;margin-bottom:7px}.footer{position:fixed;bottom:0;left:0;right:0;padding:9px 13px;background:#090712ee;border-top:1px solid var(--line);z-index:5}.footer button{display:block;width:min(700px,100%);margin:auto;padding:13px;border:0;border-radius:13px;background:linear-gradient(90deg,var(--purple),var(--turq));color:#08060f;font-weight:900}
+.check{display:flex;gap:10px;align-items:center;padding:9px 0;color:#ddd7e9}.check input{width:20px;height:20px;accent-color:var(--turq)}
+</style></head><body>
+<header><div class="brand">Yuyu <span>Training</span></div><div class="sub">Kişisel fitness • Sırt & Omuz öncelikli</div></header>
+<main><section class="hero"><h1 id="todayTitle"></h1><p id="todayFocus"></p><div class="barbg"><div class="bar" id="bar"></div></div><div class="stats"><span id="progressText"></span><span id="streak"></span></div></section>
+<div class="tabs" id="tabs"></div><div id="content"></div></main>
+<div class="footer"><button onclick="resetToday()">Bugünkü antrenmanı sıfırla</button></div>
+<script>
+const P=[
+{day:1,title:"1. Gün — Göğüs + Sırt + Kollar",focus:"Göğüs ana hareketleri, sırt aktivasyonu, kollar, core ve HIIT",e:[
+["Barfiks","Sırt / biceps",3,"AMRAP","barfiks","Kürek kemiklerini aşağı-geriye çek; sallanma olmadan çeneyi bara yaklaştır."],
+["Şınav","Göğüs / triceps",3,"AMRAP","sinav","Gövde tek parça; dirsekleri yaklaşık 30–45° tut."],
+["Bench Press","Göğüs",4,"8–12","bench","Ayaklar sabit, kürek kemikleri geride; barı kontrollü indir."],
+["Incline Dumbbell Press","Üst göğüs",3,"8–12","incline","Bench açısı yaklaşık 20–30°; omuzları gereksiz öne yuvarlama."],
+["Chest-Supported Row","Orta sırt",3,"8–12","row","Göğüs destekli; dirsekleri geriye sür ve üstte kısa sıkışma yap."],
+["Dumbbell Curl","Biceps",3,"10–15","curl","Dirsekleri gövde yanında sabit tut, momentum kullanma."],
+["Rope Pushdown","Triceps",3,"10–15","pushdown","Dirsekler sabit; aşağıda triceps'i sık."],
+["Cable Crunch","Karın",3,"10–15","crunch","Kalçadan değil omurgayı kontrollü bükerek kaburgaları pelvise yaklaştır."],
+["Plank","Core",3,"30–60 sn","plank","Kalça düşmesin/yükselmesin; karın ve kalçayı sık."],
+["HIIT — Air Bike / Koşu Bandı","Kardiyo",1,"10–12 dk","cardio","5 dk ısınma + 6 tur: 20 sn çok hızlı / 70 sn kolay + 2 dk soğuma."]
+]},
+{day:2,title:"2. Gün — Sırt + Omuz",focus:"Haftanın ana sırt günü: dikey + yatay çekiş ve yan/arka omuz",e:[
+["Dips","Göğüs / triceps",3,"AMRAP","dips","Omuzları aşağıda tut; kontrollü derinlikte in."],
+["Seated Cable Row","Orta sırt",4,"8–12","row","Belden savrulmadan kabloyu gövdeye çek."],
+["Lat Pulldown","Kanat / sırt",3,"8–12","pulldown","Barı göğsün üstüne çek; boynun arkasına çekme."],
+["Overhead Shoulder Press","Omuz",3,"8–12","press","Kaburgaları aşırı açmadan baş üstüne kontrollü bas."],
+["Lateral Raise","Yan omuz",4,"12–15","lateral","Dirsekleri hafif kırık tut; omuz hizasına kadar kontrollü kaldır."],
+["Face Pull","Arka omuz / üst sırt",3,"12–15","facepull","İpi yüz hizasına çek; dış rotasyonla bitir."],
+["Incline Dumbbell Curl","Biceps",2,"10–15","curl","Tam esneme, kontrollü çıkış."],
+["Overhead Cable Extension","Triceps",2,"10–15","overheadtriceps","Dirsekleri mümkün olduğunca sabit tut."],
+["Hanging Knee Raise","Alt karın / core",3,"10–15","knee","Bacakları savurmadan pelvisi yukarı kıvır."],
+["HIIT — Rower / Kürek Ergometresi","Kardiyo",1,"10–12 dk","cardio","3 dk ısınma + 8 tur: 20 sn sert / 40 sn kolay + 2 dk soğuma."]
+]},
+{day:3,title:"3. Gün — Bacak + Sırt + Omuz",focus:"Bacak minimum etkili hacim; arka zincir, sırt ve omuz korunuyor",e:[
+["Back Squat","Quadriceps / glute",4,"6–10","squat","Derinliği hareket kaliten ve mobiliten belirlesin; bel nötr."],
+["Romanian Deadlift","Hamstring / glute",3,"8–12","rdl","Kalçayı geriye gönder; bar bacaklara yakın."],
+["Standing Calf Raise","Calf",3,"12–15","calf","Alt noktada esnet, üstte 1 sn sık."],
+["Leg Curl","Hamstring",3,"12–15","legcurl","Kalçayı pedden kaldırmadan kontrollü kıvır."],
+["Barbell Row","Sırt",3,"8–12","barbellrow","Gövde açısını koru; barı alt kaburgalara çek."],
+["Lateral Raise","Yan omuz",3,"12–15","lateral","Hareketi savurmadan yan omuzu hedefle."],
+["Rear Delt Fly","Arka omuz",3,"12–15","reardelt","Boynu rahat bırak; dirsekleri yana aç."],
+["Cable Crunch","Karın",3,"10–15","crunch","Kontrollü omurga fleksiyonu; kalçayı geriye kaçırma."],
+["Zone 2 — Treadmill / Bike","Kardiyo",1,"20–30 dk","zone2","Konuşmayı sürdürebileceğin rahat-orta tempo; toparlanmayı destekle."]
+]},
+{day:4,title:"4. Gün — Üst Vücut + Sırt",focus:"Göğüs + sırt hacmi ve omuz tamamlayıcıları",e:[
+["Barfiks / Assisted Pull-up","Sırt",3,"AMRAP","barfiks","Gerekirse assisted makine kullan; tam kontrollü tekrar."],
+["Bench Press","Göğüs",4,"8–12","bench","Geçen haftaki performansı takip et."],
+["One-Arm Dumbbell Row","Sırt / kanat",3,"8–12","onearmrow","Dirseği kalçaya doğru sür."],
+["Incline Dumbbell Press","Üst göğüs",3,"8–12","incline","Omuzları öne düşürmeden press."],
+["Cable Lateral Raise","Yan omuz",3,"12–15","lateral","Kablo hattında sürekli gerilim."],
+["Face Pull","Arka omuz / üst sırt",3,"12–15","facepull","Üstte kontrollü sıkışma."],
+["Hammer Curl","Biceps",2,"10–15","hammer","Nötr tutuş; ön kolu da çalıştır."],
+["Rope Pushdown","Triceps",2,"10–15","pushdown","Dirsekleri sabit tut."],
+["Ab Wheel / Dead Bug","Core",3,"8–12","abwheel","Bel boşluğunu kontrol et; zorlanıyorsa Dead Bug seç."],
+["HIIT — Treadmill Incline","Kardiyo",1,"10–12 dk","cardio","4 dk ısınma + 6 tur: 30 sn hızlı eğimli yürüyüş/koşu + 60 sn kolay + 2 dk soğuma."]
+]}];
+
+const S=JSON.parse(localStorage.getItem("yuyu2")||"{}");let day=(new Date().getDay()||1);if(day>4)day=4;
+function K(d,i,s){return d+"-"+i+"-"+s}
+function render(){
+ document.getElementById("tabs").innerHTML=P.map(x=>`<button class="${x.day==day?'active':''}" onclick="day=${x.day};render()">Gün ${x.day}</button>`).join("");
+ const p=P[day-1];document.getElementById("todayTitle").textContent=p.title;document.getElementById("todayFocus").textContent=p.focus;
+ let total=0,done=0;let out=`<section class="card"><div class="sectionTitle">Antrenman</div>`;
+ p.e.forEach((x,i)=>{let [n,m,set,r,g,desc]=x;total+=set;
+  out+=`<div class="exercise"><div class="exhead"><div><div class="name">${n}</div><div class="meta">${m} • ${set} set • ${r}</div></div><span class="badge">${m.includes("Kardiyo")?"KARDİYO":"HAREKET"}</span></div>
+  <img class="gif" src="gifs/${g}.gif" alt="${n} animasyonu">
+  <div class="details"><b>Nasıl yapılır?</b> ${desc}</div>
+  <div class="sets">`;
+  for(let s=1;s<=set;s++){let d=!!S[K(day,i,s)];if(d)done++;out+=`<button class="set ${d?'done':''}" onclick="toggle(${i},${s})">Set ${s}<br>${d?'✓ Tamam':'○ Bekliyor'}</button>`}
+  out+=`</div><div class="log"><input placeholder="Kilo (kg)" id="w-${i}"><input placeholder="Tekrar / süre" id="r-${i}"></div>
+  <div class="buttons"><button class="smallbtn" onclick="timer(90)">⏱ 90 sn dinlen</button><button class="smallbtn" onclick="saveLog(${i})">💾 Set notunu kaydet</button></div></div>`;
+ });
+ out+=`</section><section class="card"><div class="sectionTitle">🎯 Antrenman kalitesi</div>
+ <div class="check"><input type="checkbox" id="warm"><label for="warm">5–8 dk ısınma yaptım</label></div>
+ <div class="check"><input type="checkbox" id="water"><label for="water">Antrenman boyunca su takibimi yaptım</label></div>
+ <div class="check"><input type="checkbox" id="form"><label for="form">Bugün formumu ağırlıktan önde tuttum</label></div></section>
+ <section class="note"><b>📈 İlerleme kuralı:</b> Bir harekette tüm setlerde üst tekrar sınırına temiz formla ulaştığında, sonraki seansta küçük bir ağırlık artışı dene. AMRAP setlerinde her hafta tekrar/yardım seviyeni kaydet.</section>`;
+ document.getElementById("content").innerHTML=out;let pct=total?Math.round(done/total*100):0;document.getElementById("bar").style.width=pct+"%";document.getElementById("progressText").textContent=`${done}/${total} set • %${pct}`;document.getElementById("streak").textContent="Yuyu Training";
+}
+function toggle(i,s){let k=K(day,i,s);S[k]=!S[k];localStorage.setItem("yuyu2",JSON.stringify(S));render()}
+function saveLog(i){let w=document.getElementById("w-"+i).value,r=document.getElementById("r-"+i).value;localStorage.setItem("yuyu-log-"+day+"-"+i,JSON.stringify({w,r,date:new Date().toLocaleDateString("tr-TR")}));alert("Set notu kaydedildi.")}
+function timer(sec){let end=Date.now()+sec*1000;let x=window.open("","timer","width=330,height=260");if(!x)return;x.document.write(`<body style="background:#090712;color:white;font-family:system-ui;text-align:center;padding:28px"><h2 style="color:#2ee6d0">Yuyu Training</h2><div id=t style="font-size:54px;font-weight:900"></div><script>let e=${end};let q=setInterval(()=>{let s=Math.max(0,Math.ceil((e-Date.now())/1000));t.textContent=s+' sn';if(!s){clearInterval(q);document.body.innerHTML+='<h3 style="color:#9b5cff">Dinlenme tamamlandı 💪</h3>'}},200)<\/script></body>`)}
+function resetToday(){if(confirm("Bugünün tüm setlerini sıfırlayayım mı?")){P[day-1].e.forEach((x,i)=>{for(let s=1;s<=x[2];s++)delete S[K(day,i,s)]});localStorage.setItem("yuyu2",JSON.stringify(S));render()}}
+render();
+</script></body></html>
